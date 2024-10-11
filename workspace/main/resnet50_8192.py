@@ -1,13 +1,14 @@
-import sys, os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-os.chdir(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+import sys, os, json
+root = os.sep + os.sep.join(__file__.split(os.sep)[1:__file__.split(os.sep).index("Recurrent-Parameter-Generation")+1])
+sys.path.append(root)
+os.chdir(root)
 USE_WANDB = True
 
 # set global seed
 import random
 import numpy as np
 import torch
-seed = SEED = 1000
+seed = SEED = 999
 torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
@@ -20,16 +21,16 @@ random.seed(seed)
 import math
 import random
 import warnings
+from _thread import start_new_thread
 warnings.filterwarnings("ignore", category=UserWarning)
 if USE_WANDB: import wandb
 # torch
 import torch
 import torch.nn as nn
-import bitsandbytes.optim as optim
+import torch.optim as optim
 from torch.nn import functional as F
 from torch.cuda.amp import autocast
 # model
-from mamba_ssm import Mamba2 as Mamba
 from model import MambaDiffusion as Model
 from model.diffusion import DDPMSampler, DDIMSampler
 from torch.optim.lr_scheduler import CosineAnnealingLR, LinearLR, SequentialLR
@@ -49,12 +50,12 @@ config = {
     "dim_per_token": 8192,
     "sequence_length": 'auto',
     # train setting
-    "batch_size": 4,
-    "num_workers": 4,
-    "total_steps": 100000,
+    "batch_size": 8,
+    "num_workers": 16,
+    "total_steps": 80000,
     "learning_rate": 0.00003,
     "weight_decay": 0.0,
-    "save_every": 100000//30,
+    "save_every": 80000//30,
     "print_every": 50,
     "autocast": lambda i: 5000 < i < 45000,
     "checkpoint_save_path": "./checkpoint",
@@ -64,17 +65,16 @@ config = {
     "test_command": Dataset.test_command,
     # to log
     "model_config": {
-        "num_permutation": "auto",
+        "num_permutation": 'auto',
         # mamba config
         "d_condition": 1,
         "d_model": 8192,
-        "post_d_model": 8192,
         "d_state": 128,
         "d_conv": 4,
         "expand": 2,
         "num_layers": 2,
         # diffusion config
-        "diffusion_batch": 256,
+        "diffusion_batch": 1024,
         "layer_channels": [1, 32, 64, 128, 64, 32, 1],
         "model_dim": "auto",
         "condition_dim": "auto",
@@ -124,39 +124,10 @@ model = Model(
         positional_embedding_dim=config["model_config"]["d_model"]
     )  # positional_embedding
 )  # model setting is in model
-class VaryMambaModel(nn.Module):
-    config = {}
-    def __init__(self, positional_embedding):
-        super().__init__()
-        mamba1 = Mamba(d_model=config["model_config"]["d_model"],
-                       d_state=config["model_config"]["d_state"],
-                       d_conv=config["model_config"]["d_conv"],
-                       expand=config["model_config"]["expand"])
-        mamba2 = Mamba(d_model=config["model_config"]["post_d_model"],
-                       d_state=config["model_config"]["d_state"],
-                       d_conv=config["model_config"]["d_conv"],
-                       expand=config["model_config"]["expand"])
-        mamba2.in_proj = nn.Linear(mamba1.out_proj.out_features, mamba2.in_proj.out_features, bias=False)
-        self.mamba_forward = nn.Sequential(*[mamba1, mamba2])
-        pe = positional_embedding[None, :, :]
-        if self.config.get("trainable_pe"):
-            self.pe = nn.Parameter(pe)
-        else:  # fixed positional embedding
-            self.register_buffer("pe", pe)
-    def forward(self, output_shape, condition=None):
-        x = self.mamba_forward(self.pe.repeat(output_shape[0], 1, 1) + condition)
-        return x
-VaryMambaModel.config = config["model_config"]
-model.model = VaryMambaModel(
-    positional_embedding=train_set.get_position_embedding(
-        positional_embedding_dim=config["model_config"]["d_model"]
-    )  # positional_embedding
-)  # update mamba model
-torch.cuda.empty_cache()
 
 # Optimizer
 print('==> Building optimizer..')
-optimizer = optim.AdamW8bit(
+optimizer = optim.AdamW(
     params=model.parameters(),
     lr=config["learning_rate"],
     weight_decay=config["weight_decay"],
@@ -170,14 +141,15 @@ scheduler = CosineAnnealingLR(
 if __name__ == "__main__":
     kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
     accelerator = Accelerator(kwargs_handlers=[kwargs,])
-    # FIXME: the program rely on this bug; find_unused_parameters=True is necessary! why?
     model, optimizer, train_loader = accelerator.prepare(model, optimizer, train_loader)
 
 
 # wandb
 if __name__ == "__main__" and USE_WANDB and accelerator.is_main_process:
-    wandb.login(key="b8a4b0c7373c8bba8f3d13a2298cd95bf3165260")
-    wandb.init(project="AR-Param-Generation", name=config['tag'], config=config,)
+    with open("./workspace/config.json", "r") as f:
+        additional_config = json.load(f)
+    wandb.login(key=additional_config["wandb_api_key"])
+    wandb.init(project="Recurrent-Parameter-Generation", name=config['tag'], config=config,)
 
 
 
@@ -188,7 +160,7 @@ def train():
     if not USE_WANDB:
         train_loss = 0
         this_steps = 0
-    print("==> start training..")
+    print("==> Start training..")
     model.train()
     for batch_idx, (param, permutation_state) in enumerate(train_loader):
         optimizer.zero_grad()
@@ -232,10 +204,11 @@ def generate(save_path=config["generated_path"], need_test=True):
         wandb.log({"generated_norm": generated_norm.item()})
     train_set.save_params(prediction, save_path=save_path)
     if need_test:
-        os.system(config["test_command"])
-        print("\n")
+        start_new_thread(os.system, (config["test_command"],))
     model.train()
     return prediction
+
+
 
 
 if __name__ == '__main__':

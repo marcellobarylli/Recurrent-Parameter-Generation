@@ -1,5 +1,5 @@
 accelerate launch \
-  --main_process_port=29705 \
+  --main_process_port=12305 \
   --num_processes=1 \
   --gpu_ids='2' \
   --num_machines=1 \

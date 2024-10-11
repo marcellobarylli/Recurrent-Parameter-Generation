@@ -1,8 +1,7 @@
 accelerate launch \
-  --main_process_port=29454 \
-  --multi_gpu \
-  --num_processes=2 \
-  --gpu_ids='2,3' \
+  --main_process_port=12304 \
+  --num_processes=1 \
+  --gpu_ids='2' \
   --num_machines=1 \
   --mixed_precision=bf16 \
   --dynamo_backend=no \
