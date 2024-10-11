@@ -1,13 +1,14 @@
-import sys, os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
-os.chdir(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
+import sys, os, json
+root = os.sep + os.sep.join(__file__.split(os.sep)[1:__file__.split(os.sep).index("Recurrent-Parameter-Generation")+1])
+sys.path.append(root)
+os.chdir(root)
 USE_WANDB = True
 
 # set global seed
 import random
 import numpy as np
 import torch
-seed = SEED = 9998
+seed = SEED = 999
 torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
@@ -20,6 +21,7 @@ random.seed(seed)
 import math
 import random
 import warnings
+from _thread import start_new_thread
 warnings.filterwarnings("ignore", category=UserWarning)
 if USE_WANDB: import wandb
 # torch
@@ -41,6 +43,7 @@ from torch.utils.data import DataLoader
 
 
 
+
 config = {
     "seed": SEED,
     # dataset setting
@@ -48,12 +51,12 @@ config = {
     "dim_per_token": 8192,
     "sequence_length": 'auto',
     # train setting
-    "batch_size": 4,
-    "num_workers": 8,
-    "total_steps": 50000,
+    "batch_size": 16,
+    "num_workers": 16,
+    "total_steps": 80000,
     "learning_rate": 0.00003,
     "weight_decay": 0.0,
-    "save_every": 50000//25,
+    "save_every": 80000//25,
     "print_every": 50,
     "autocast": lambda i: 5000 < i < 45000,
     "checkpoint_save_path": "./checkpoint",
@@ -112,10 +115,6 @@ train_loader = DataLoader(
 )
 
 # Model
-##### set transformer casual mask #####
-causal_mask = torch.eye(config["sequence_length"], dtype=torch.long).bool()
-config["model_config"]["mask"] = causal_mask
-##### set transformer casual mask #####
 print('==> Building model..')
 Model.config = config["model_config"]
 model = Model(
@@ -141,15 +140,15 @@ scheduler = CosineAnnealingLR(
 if __name__ == "__main__":
     kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
     accelerator = Accelerator(kwargs_handlers=[kwargs,])
-    # FIXME: the program rely on this bug; find_unused_parameters=True is necessary! why?
-    # FIXME: we use a dynamic policy in diffusion training, this may be the reason...
     model, optimizer, train_loader = accelerator.prepare(model, optimizer, train_loader)
 
 
 # wandb
 if __name__ == "__main__" and USE_WANDB and accelerator.is_main_process:
-    wandb.login(key="b8a4b0c7373c8bba8f3d13a2298cd95bf3165260")
-    wandb.init(project="AR-Param-Generation", name=config['tag'], config=config,)
+    with open("./workspace/config.json", "r") as f:
+        additional_config = json.load(f)
+    wandb.login(key=additional_config["wandb_api_key"])
+    wandb.init(project="Recurrent-Parameter-Generation", name=config['tag'], config=config,)
 
 
 
@@ -160,7 +159,7 @@ def train():
     if not USE_WANDB:
         train_loss = 0
         this_steps = 0
-    print("==> start training..")
+    print("==> Start training..")
     model.train()
     for batch_idx, (param, permutation_state) in enumerate(train_loader):
         optimizer.zero_grad()
@@ -204,10 +203,11 @@ def generate(save_path=config["generated_path"], need_test=True):
         wandb.log({"generated_norm": generated_norm.item()})
     train_set.save_params(prediction, save_path=save_path)
     if need_test:
-        os.system(config["test_command"])
-        print("\n")
+        start_new_thread(os.system, (config["test_command"],))
     model.train()
     return prediction
+
+
 
 
 if __name__ == '__main__':
