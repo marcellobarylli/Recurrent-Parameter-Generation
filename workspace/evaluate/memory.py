@@ -5,6 +5,7 @@ os.chdir(root)
 
 # torch
 import torch
+from torch import nn
 # father
 import importlib
 item = importlib.import_module(f"{sys.argv[1]}")
@@ -30,7 +31,10 @@ config.update(test_config)
 
 # Model
 print('==> Building model..')
-model.load_state_dict(torch.load(config["checkpoint"]))
+diction = torch.load(config["checkpoint"])
+permutation_shape = diction["to_permutation_state.weight"].shape
+model.to_permutation_state = nn.Embedding(*permutation_shape)
+model.load_state_dict(diction)
 model = model.to(config["device"])
 
 

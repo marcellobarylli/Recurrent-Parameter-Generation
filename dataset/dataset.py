@@ -8,6 +8,7 @@ import math
 import random
 import json
 from abc import ABC
+import pickle
 
 
 
@@ -128,6 +129,10 @@ class BaseDataset(Dataset, ABC):
     }
 
     def __init__(self, checkpoint_path=None, dim_per_token=8192, **kwargs):
+        if not os.path.exists(self.data_path):
+            os.makedirs(self.data_path, exist_ok=False)
+        if not os.path.exists(os.path.dirname(self.generated_path)):
+            os.makedirs(os.path.dirname(self.generated_path))
         self.config.update(kwargs)
         checkpoint_path = self.data_path if checkpoint_path is None else checkpoint_path
         assert os.path.exists(checkpoint_path)
@@ -139,8 +144,38 @@ class BaseDataset(Dataset, ABC):
         self.checkpoint_list = list([os.path.join(checkpoint_path, item) for item in checkpoint_list])
         self.length = self.real_length = len(self.checkpoint_list)
         self.set_infinite_dataset()
-        self.get_structure()
-        # other kwargs
+        # get structure
+        structure_cache_file = os.path.join(os.path.dirname(self.data_path), "structure.cache")
+        try:  # try to load cache file
+            assert os.path.exists(structure_cache_file)
+            with open(structure_cache_file, "rb") as f:
+                print(f"Loading cache from {structure_cache_file}")
+                cache_file = pickle.load(f)
+            if len(self.checkpoint_list) != 0:
+                assert set(cache_file["checkpoint_list"]) == set(self.checkpoint_list)
+                self.structure = cache_file["structure"]
+            else:  # empty checkpoint_list, only generate
+                print("Cannot find any trained checkpoint, loading cache file for generating!")
+                self.structure = cache_file["structure"]
+                fake_diction = {key: torch.zeros(item[0]) for key, item in self.structure.items()}
+                torch.save(fake_diction, os.path.join(checkpoint_path, "fake_checkpoint.pth"))
+                self.checkpoint_list.append(os.path.join(checkpoint_path, "fake_checkpoint.pth"))
+                self.length = self.real_length = len(self.checkpoint_list)
+                self.set_infinite_dataset()
+        except AssertionError:  # recompute cache file
+            print("==> Organizing structure..")
+            self.structure = self.get_structure()
+            with open(structure_cache_file, "wb") as f:
+                pickle.dump({"structure": self.structure, "checkpoint_list": self.checkpoint_list}, f)
+        # get sequence_length
+        self.sequence_length = self.get_sequence_length()
+
+    def get_sequence_length(self):
+        fake_diction = {key: torch.zeros(item[0]) for key, item in self.structure.items()}
+        # get sequence_length
+        param = self.preprocess(fake_diction)
+        self.sequence_length = param.size(0)
+        return self.sequence_length
 
     def get_structure(self):
         # get structure
@@ -179,9 +214,7 @@ class BaseDataset(Dataset, ABC):
                     value[i] /= len(structures)
                 final_structure[key] = tuple(value)
         self.structure = final_structure
-        # get sequence_length
-        param = self.preprocess(structure_diction)
-        self.sequence_length = param.size(0)
+        return self.structure
 
     def set_infinite_dataset(self, max_num=None):
         if max_num is None:

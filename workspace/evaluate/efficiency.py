@@ -40,7 +40,10 @@ config.update(generate_config)
 
 # Model
 print('==> Building model..')
-model.load_state_dict(torch.load(config["checkpoint"]))
+diction = torch.load(config["checkpoint"])
+permutation_shape = diction["to_permutation_state.weight"].shape
+model.to_permutation_state = nn.Embedding(*permutation_shape)
+model.load_state_dict(diction)
 model.criteria.diffusion_sampler = config["sampler"](
     model=model.criteria.diffusion_sampler.model,
     beta=config["model_config"]["beta"],

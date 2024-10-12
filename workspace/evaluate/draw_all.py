@@ -64,7 +64,7 @@ print("\n==> start evaluating..")
 total_result_list = []
 total_acc_list = []
 
-cache_file = os.path.join(os.path.dirname(checkpoint_path), "cache.pt") if cache_file is None else cache_file
+cache_file = os.path.join(os.path.dirname(checkpoint_path), "performance.cache") if cache_file is None else cache_file
 if resume is True and os.path.exists(cache_file):
     print(f"load cache from {cache_file}")
     with open(cache_file, "rb") as f:
