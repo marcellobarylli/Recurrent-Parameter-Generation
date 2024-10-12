@@ -24,12 +24,16 @@ config = {
     "generated_path": f"./dataset/{tag}/generated",
     "cache_file": None,  # None means default dataset/tag/cache.pt
     "resume": True,  # if you updated the checkpoint and generated models, use "resume": False.
-    "noise_intensity": [0.1, 0.01, 0.001],
-    "total_noised_number": 9,
+    "noise_intensity": [0.01, 0.02, 0.03, 0.04, 0.05],
+    "total_noised_number": 25,
 }
 assert config["total_noised_number"] % len(config["noise_intensity"]) == 0, \
     "total_noised_number must be a multiple of noise_intensity"
 globals().update(config)
+try:  # update config
+    exec(sys.argv[2])
+except IndexError:
+    pass
 
 
 

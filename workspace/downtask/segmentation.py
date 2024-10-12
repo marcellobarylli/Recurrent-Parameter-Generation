@@ -2,7 +2,9 @@ import sys, os, json
 root = os.sep + os.sep.join(__file__.split(os.sep)[1:__file__.split(os.sep).index("Recurrent-Parameter-Generation")+1])
 sys.path.append(root)
 os.chdir(root)
-USE_WANDB = True
+with open("./workspace/config.json", "r") as f:
+    additional_config = json.load(f)
+USE_WANDB = additional_config["use_wandb"]
 
 # set global seed
 import random
@@ -190,8 +192,6 @@ if __name__ == "__main__":
 
 # wandb
 if __name__ == "__main__" and USE_WANDB and accelerator.is_main_process:
-    with open("./workspace/config.json", "r") as f:
-        additional_config = json.load(f)
     wandb.login(key=additional_config["wandb_api_key"])
     wandb.init(project="Recurrent-Parameter-Generation", name=config['tag'], config=config,)
 
