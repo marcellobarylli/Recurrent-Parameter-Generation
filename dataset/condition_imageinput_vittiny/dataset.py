@@ -5,6 +5,8 @@ from torchvision.datasets import CIFAR10
 import torchvision.transforms as transforms
 
 
+
+
 class BinaryClassifierDataset(Dataset):
     def __init__(self, root, train, optimize_class):
         optimize_class = [optimize_class,] if isinstance(optimize_class, int) else optimize_class

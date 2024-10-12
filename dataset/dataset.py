@@ -131,7 +131,7 @@ class BaseDataset(Dataset, ABC):
     def __init__(self, checkpoint_path=None, dim_per_token=8192, **kwargs):
         if not os.path.exists(self.data_path):
             os.makedirs(self.data_path, exist_ok=False)
-        if not os.path.exists(os.path.dirname(self.generated_path)):
+        if self.generated_path is not None and not os.path.exists(os.path.dirname(self.generated_path)):
             os.makedirs(os.path.dirname(self.generated_path))
         self.config.update(kwargs)
         checkpoint_path = self.data_path if checkpoint_path is None else checkpoint_path

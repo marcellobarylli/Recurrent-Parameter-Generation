@@ -11,7 +11,6 @@ torch.backends.cudnn.benchmark = True
 np.random.seed(seed)
 random.seed(seed)
 
-
 try:  # relative import
     from model import Model
     from dataset import BinaryClassifierDataset as Dataset
@@ -53,7 +52,7 @@ config = {
     "epochs": 13,
     "weight_decay": 0.1,
     "save_learning_rate": 1e-5,
-    "total_save_number": 20,
+    "total_save_number": 10,
     "tag": os.path.basename(os.path.dirname(__file__)),
     "optimize_class": get_optimize_class()[0],
     "optimize_class_int": get_optimize_class()[1],
@@ -162,7 +161,7 @@ def test(model=model):
         correct += predicts.eq(targets).sum().item()
     loss = test_loss / (batch_idx + 1)
     acc = correct / total
-    print(f"Loss: {loss:.4f} | Acc: {acc:.4f}")
+    print(f"Loss: {loss:.4f} | Acc: {acc:.4f}\n")
     model.train()
     return loss, acc, all_targets, all_predicts
 

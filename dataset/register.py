@@ -1,3 +1,4 @@
+import torch
 from .dataset import BaseDataset, ConditionalDataset
 
 

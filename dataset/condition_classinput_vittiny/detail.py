@@ -9,6 +9,7 @@ from torchvision import transforms
 
 
 
+
 try:
     test_item = sys.argv[1]
 except IndexError:
@@ -37,6 +38,8 @@ original_dataset = CIFAR10(
 )
 original_targets = [original_dataset[i][1] for i in range(len(original_dataset))]
 original_targets = torch.tensor(original_targets, dtype=torch.long)
+
+
 
 
 for item in test_items:

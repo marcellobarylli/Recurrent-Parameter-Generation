@@ -30,8 +30,6 @@ class BinaryClassifierDataset(Dataset):
         return self.dataset.__len__()
 
 
-
-
 def get_optimize_class():
     try:  # get string
         string = sys.argv[1]

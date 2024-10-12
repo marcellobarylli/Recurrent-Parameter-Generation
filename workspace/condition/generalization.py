@@ -1,12 +1,16 @@
-import sys, os
-sys.path.append("/mnt/petrelfs/zhaowangbo.p/arpgen/AR-Param-Generation")
-os.chdir("/mnt/petrelfs/zhaowangbo.p/arpgen/AR-Param-Generation")
-USE_WANDB = True
+import sys, os, json
+root = os.sep + os.sep.join(__file__.split(os.sep)[1:__file__.split(os.sep).index("Recurrent-Parameter-Generation")+1])
+sys.path.append(root)
+os.chdir(root)
+with open("./workspace/config.json", "r") as f:
+    additional_config = json.load(f)
+USE_WANDB = additional_config["use_wandb"]
 
 # other
 import math
 import random
 import warnings
+from _thread import start_new_thread
 warnings.filterwarnings("ignore", category=UserWarning)
 if USE_WANDB: import wandb
 # torch
@@ -29,6 +33,7 @@ from torch.utils.data import DataLoader
 
 
 
+
 config = {
     # dataset setting
     "dataset": None,
@@ -37,10 +42,10 @@ config = {
     # train setting
     "batch_size": 16,
     "num_workers": 16,
-    "total_steps": 100000,
+    "total_steps": 120000,
     "learning_rate": 0.00003,
     "weight_decay": 0.0,
-    "save_every": 100000//50,
+    "save_every": 120000//50,
     "print_every": 50,
     "autocast": lambda i: 5000 < i < 90000,
     "checkpoint_save_path": "./checkpoint",
@@ -59,7 +64,7 @@ config = {
         "expand": 2,
         "num_layers": 2,
         # diffusion config
-        "diffusion_batch": 256,
+        "diffusion_batch": 512,
         "layer_channels": [1, 32, 64, 128, 64, 32, 1],
         "model_dim": "auto",
         "condition_dim": "auto",
@@ -69,6 +74,7 @@ config = {
         "T": 1000,
         "forward_once": True,
     },
+    "tag": "generalization",
 }
 
 
@@ -134,8 +140,8 @@ if __name__ == "__main__":
 
 # wandb
 if __name__ == "__main__" and USE_WANDB and accelerator.is_main_process:
-    wandb.login(key="b8a4b0c7373c8bba8f3d13a2298cd95bf3165260")
-    wandb.init(project="AR-Param-Generation", name=__file__.split("/")[-1][:-3], config=config)
+    wandb.login(key=additional_config["wandb_api_key"])
+    wandb.init(project="Recurrent-Parameter-Generation", name=config['tag'], config=config,)
 
 
 
@@ -146,7 +152,7 @@ def train():
     if not USE_WANDB:
         train_loss = 0
         this_steps = 0
-    print("==> start training..")
+    print("==> Start training..")
     model.train()
     for batch_idx, (param, condition) in enumerate(train_loader):
         optimizer.zero_grad()
@@ -199,10 +205,11 @@ def generate(save_path=config["generated_path"], need_test=True):
     if accelerator.is_main_process:
         train_set.save_params(prediction, save_path=save_path.format(class_index))
     if need_test:
-        os.system(config["test_command"].format(class_index))
-        print("\n")
+        start_new_thread(os.system, (config["test_command"].format(class_index),))
     model.train()
     return prediction
+
+
 
 
 if __name__ == '__main__':

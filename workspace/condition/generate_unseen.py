@@ -1,6 +1,7 @@
-import sys, os
-sys.path.append("/mnt/petrelfs/zhaowangbo.p/arpgen/AR-Param-Generation")
-os.chdir("/mnt/petrelfs/zhaowangbo.p/arpgen/AR-Param-Generation")
+import sys, os, json
+root = os.sep + os.sep.join(__file__.split(os.sep)[1:__file__.split(os.sep).index("Recurrent-Parameter-Generation")+1])
+sys.path.append(root)
+os.chdir(root)
 
 # torch
 import torch
@@ -12,18 +13,21 @@ test_set.set_infinite_dataset(max_num=test_set.real_length)
 print("num_generated:", test_set.real_length)
 config = item.config
 model = item.model
-config["tag"] = config.get("tag") if config.get("tag") is not None else os.path.basename(item.__file__)[:-3]
+assert config.get("tag") is not None, "Remember to set a tag."
+
+
 
 
 generate_config = {
     "device": "cuda",
-    "checkpoint": "/mnt/petrelfs/zhaowangbo.p/arpgen/AR-Param-Generation/checkpoint/generalization.pth",  # f"./checkpoint/{config['tag']}.pth",
+    "checkpoint": f"./checkpoint/{config['tag']}.pth",
     "generated_path": os.path.join(test_set.generated_path.rsplit("/", 1)[0], "generated_{}_{}.pth"),
     "test_command": os.path.join(test_set.test_command.rsplit("/", 1)[0], "generated_{}_{}.pth"),
     "need_test": True,
     "specific_item": None, 
 }
 config.update(generate_config)
+
 
 
 
@@ -47,9 +51,10 @@ def generate(save_path=config["generated_path"], test_command=config["test_comma
     train_set.save_params(prediction, save_path=save_path.format(config["tag"], f"class{class_index}"))
     if need_test:
         os.system(test_command.format(config["tag"], f"class{class_index}"))
-        print("\n")
     model.train()
     return prediction
+
+
 
 
 if __name__ == "__main__":
