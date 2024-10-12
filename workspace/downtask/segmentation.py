@@ -1,6 +1,7 @@
-import sys, os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-os.chdir(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+import sys, os, json
+root = os.sep + os.sep.join(__file__.split(os.sep)[1:__file__.split(os.sep).index("Recurrent-Parameter-Generation")+1])
+sys.path.append(root)
+os.chdir(root)
 USE_WANDB = True
 
 # set global seed
@@ -21,6 +22,7 @@ import _thread
 import math
 import random
 import warnings
+from _thread import start_new_thread
 warnings.filterwarnings("ignore", category=UserWarning)
 if USE_WANDB: import wandb
 # torch
@@ -45,7 +47,7 @@ from torch.utils.data import DataLoader
 
 
 config = {
-    "resume": True,
+    "resume": False,
     "seed": SEED,
     # dataset setting
     "dataset": Dataset,
@@ -170,8 +172,8 @@ scheduler = CosineAnnealingLR(
 )
 
 # load checkpoint
-if config["resume"] and os.path.exists("./segmentation.pt"):
-    diction = torch.load("./segmentation.pt", map_location="cpu")
+if config["resume"] and os.path.exists(f"./cache_{config['tag']}.pt"):
+    diction = torch.load(f"./cache_{config['tag']}.pt", map_location="cpu")
     model.load_state_dict(diction["model"])
     optimizer.load_state_dict(diction["optimizer"])
     scheduler.load_state_dict(diction["scheduler"])
@@ -183,14 +185,15 @@ else:  # not resume
 if __name__ == "__main__":
     kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
     accelerator = Accelerator(kwargs_handlers=[kwargs,])
-    # FIXME: the program rely on this bug; find_unused_parameters=True is necessary! why?
     model, optimizer, train_loader = accelerator.prepare(model, optimizer, train_loader)
 
 
 # wandb
 if __name__ == "__main__" and USE_WANDB and accelerator.is_main_process:
-    wandb.login(key="b8a4b0c7373c8bba8f3d13a2298cd95bf3165260")
-    wandb.init(project="AR-Param-Generation", name=config['tag'], config=config, resume=config["resume"])
+    with open("./workspace/config.json", "r") as f:
+        additional_config = json.load(f)
+    wandb.login(key=additional_config["wandb_api_key"])
+    wandb.init(project="Recurrent-Parameter-Generation", name=config['tag'], config=config,)
 
 
 
@@ -201,7 +204,7 @@ def train():
     if not USE_WANDB:
         train_loss = 0
         this_steps = 0
-    print("==> start training..")
+    print("==> Start training..")
     model.train()
     for batch_idx, (param, permutation_state) in enumerate(train_loader):
         batch_idx += start_batch_idx
@@ -235,7 +238,7 @@ def train():
                 "optimizer": accelerator.unwrap_model(optimizer).state_dict(),
                 "scheduler": scheduler.state_dict(),
                 "step": batch_idx
-            }, "./segmentation.pt")
+            }, f"./cache_{config['tag']}.pt")
             generate(save_path=config["generated_path"], need_test=True)
         if batch_idx >= config["total_steps"]:
             break
@@ -253,9 +256,10 @@ def generate(save_path=config["generated_path"], need_test=True):
     train_set.save_params(prediction, save_path=save_path)
     if need_test:
         _thread.start_new_thread(os.system, (config["test_command"],))  # not stuck here
-        print("\n")
     model.train()
     return prediction
+
+
 
 
 if __name__ == '__main__':

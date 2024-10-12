@@ -1,5 +1,5 @@
 accelerate launch \
-  --main_process_port=29909 \
+  --main_process_port=12316 \
   --multi_gpu \
   --num_processes=4 \
   --gpu_ids='1,2,3,4' \
