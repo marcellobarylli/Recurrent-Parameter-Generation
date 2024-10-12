@@ -153,7 +153,7 @@ def test(model=model):
         #     break
     loss = test_loss / (batch_idx + 1)
     acc = correct / total
-    print(f"Loss: {loss:.4f} | Acc: {acc:.4f}")
+    print(f"Loss: {loss:.4f} | Acc: {acc:.4f}\n")
     model.train()
     return loss, acc, all_targets, all_predicts
 
