@@ -1,10 +1,10 @@
 import torch
 from .dataset import BaseDataset, ConditionalDataset
 import json
-config_file = os.path.join(os.path.dirname(__file__), "config.json")
+config_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), "workspace/config.json")
 with open(config_file, "r") as f:
-    additional_config = json.load(f)
-test_gpu_ids = additional_config["test_gpu_ids"]
+    running_config = json.load(f)
+test_gpu_ids = running_config["test_gpu_ids"]
 
 
 

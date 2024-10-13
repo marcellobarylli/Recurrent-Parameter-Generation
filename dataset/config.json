@@ -5,6 +5,5 @@
     "test": "/home/wangkai/datasets/imagenet/val"
   },
   "dora_root": "/home/wangkai/arpgen/DoRA/commonsense_reasoning",
-  "dora_env_name": "dora_llama",
-  "test_gpu_ids": "0"
+  "dora_env_name": "dora_llama"
 }
