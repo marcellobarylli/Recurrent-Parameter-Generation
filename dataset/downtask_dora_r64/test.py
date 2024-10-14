@@ -6,7 +6,7 @@ import shutil
 from _thread import start_new_thread
 cuda_visible_devices = os.environ["CUDA_VISIBLE_DEVICES"]
 assert len(cuda_visible_devices) == 1, "Only support test on one GPU."
-RANK = 4
+RANK = 64
 
 
 

@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import time
 import torch
@@ -46,24 +47,30 @@ def move_to_checkpoint():
     while exit_flag is False:
         father = f"./finetuned_result/dora_r{RANK}"
         if not os.path.exists(father):
-            time.sleep(2)
+            time.sleep(1)
             continue
         item_list = os.listdir(father)
         for item in item_list:
             src = os.path.join(father, item)
             if not os.path.isdir(src):
-                continue
+                continue  # is file saved in the end
+            if item[:4] == "tmp-":
+                continue  # is a tmp file
             if src in finished_list:
-                continue
+                continue  # have been processed
             finished_list.append(src)
-            shutil.copy(os.path.join(src, "adapter_config.json"), adapter_config_path)
-            src = os.path.join(src, "adapter_model.bin")
-            diction = torch.load(src, map_location="cpu", weights_only=False)
-            dst = os.path.join(checkpoint_path, f"{str(index).zfill(7)}.pth")
-            torch.save(diction, dst)
+            try:  # deleted before loaded
+                shutil.copy(os.path.join(src, "adapter_config.json"), adapter_config_path)
+                src = os.path.join(src, "adapter_model.bin")
+                diction = torch.load(src, map_location="cpu", weights_only=False)
+                dst = os.path.join(checkpoint_path, f"{str(index).zfill(7)}.pth")
+                torch.save(diction, dst)
+            except Exception as e:
+                print(f"\033[91mWARNING: encountered {e} and ignored.\033[0m")
+                continue
             print(f"Moved {src} to {dst}.")
             index += 1
-        time.sleep(2)
+        time.sleep(1)
 start_new_thread(move_to_checkpoint, ())
 
 
@@ -72,7 +79,7 @@ def remove_early_checkpoint():
     while exit_flag is False:
         item_list = [item for item in os.listdir(checkpoint_path) if item.endswith('.pth')]
         if len(item_list) <= 50:
-            time.sleep(2)
+            time.sleep(10)
             continue
         def extract_number(filename):
             match = re.search(r'(\d+).pth', filename)
@@ -82,8 +89,8 @@ def remove_early_checkpoint():
         for i in range(num_to_remove):
             file_to_remove = os.path.join(checkpoint_path, sorted_items[i])
             os.remove(file_to_remove)
-            print(f"Removed: {file_to_remove}")
-        time.sleep(2)
+            print(f"\033[91mRemoved: {file_to_remove}\033[0m")
+        time.sleep(10)
 start_new_thread(remove_early_checkpoint, ())
 
 
@@ -99,4 +106,4 @@ os.system(
 # noinspection PyRedeclaration
 time.sleep(5)
 exit_flag = True
-time.sleep(5)
+time.sleep(20)

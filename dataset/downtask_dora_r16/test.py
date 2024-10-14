@@ -74,7 +74,7 @@ def conclude(path=evaluate_path):
         if ".txt" in file:
             name = os.path.basename(file).split(".")[0]
             with open(file, "r") as f:
-                value = find_last_accuracy_value(f)
+                value = find_last_accuracy_value_in_result_txt(f)
             value *= 100.
             print(f"{name}: {value:.3f}")
 
@@ -89,3 +89,4 @@ os.system(
     f"sh llama_7B_Dora_eval.sh {evaluate_path} {cuda_visible_devices}\""
 )
 conclude(evaluate_path)
+print()
