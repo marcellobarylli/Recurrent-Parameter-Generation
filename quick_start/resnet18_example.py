@@ -29,7 +29,7 @@ if USE_WANDB: import wandb
 # torch
 import torch
 import torch.nn as nn
-import bitsandbytes.optim as optim
+import torch.optim as optim
 from torch.nn import functional as F
 from torch.cuda.amp import autocast
 # model
@@ -40,7 +40,7 @@ from accelerate.utils import DistributedDataParallelKwargs
 from accelerate.utils import AutocastKwargs
 from accelerate import Accelerator
 # dataset
-from dataset import DoRACommonSenseReasoningR4 as Dataset
+from dataset import Cifar10_ResNet18 as Dataset
 from torch.utils.data import DataLoader
 
 
@@ -56,19 +56,19 @@ config = {
     "batch_size": 8,
     "num_workers": 16,
     "total_steps": 80000,
-    "learning_rate": 0.00003,
+    "learning_rate": 0.00004,
     "weight_decay": 0.0,
-    "save_every": 80000//50,
+    "save_every": 80000//30,
     "print_every": 50,
     "autocast": lambda i: 5000 < i < 45000,
     "checkpoint_save_path": "./checkpoint",
     # test setting
     "test_batch_size": 1,  # fixed, don't change this
     "generated_path": Dataset.generated_path,
-    "test_command": "echo ignore_test",
+    "test_command": Dataset.test_command,
     # to log
     "model_config": {
-        "num_permutation": "auto",
+        "num_permutation": 'auto',
         # mamba config
         "d_condition": 1,
         "d_model": 8192,
@@ -77,7 +77,7 @@ config = {
         "expand": 2,
         "num_layers": 2,
         # diffusion config
-        "diffusion_batch": 512,
+        "diffusion_batch": 1024,
         "layer_channels": [1, 32, 64, 128, 64, 32, 1],
         "model_dim": "auto",
         "condition_dim": "auto",
@@ -87,7 +87,7 @@ config = {
         "T": 1000,
         "forward_once": True,
     },
-    "tag": "downtask_dora_r4",
+    "tag": "quick_start_cifar10_resnet18",
 }
 
 
@@ -130,7 +130,7 @@ model = Model(
 
 # Optimizer
 print('==> Building optimizer..')
-optimizer = optim.AdamW8bit(
+optimizer = optim.AdamW(
     params=model.parameters(),
     lr=config["learning_rate"],
     weight_decay=config["weight_decay"],

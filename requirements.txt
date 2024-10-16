@@ -1,0 +1,6 @@
+timm
+bitsandbytes
+seaborn
+wandb
+einops
+openpyxl

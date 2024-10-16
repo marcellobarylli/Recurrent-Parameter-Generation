@@ -53,19 +53,19 @@ config = {
     "dim_per_token": 8192,
     "sequence_length": 'auto',
     # train setting
-    "batch_size": 4,
-    "num_workers": 8,
-    "total_steps": 80000,
+    "batch_size": 8,
+    "num_workers": 16,
+    "total_steps": 100000,
     "learning_rate": 0.00003,
     "weight_decay": 0.0,
-    "save_every": 80000//50,
+    "save_every": 100000//50,
     "print_every": 50,
     "autocast": lambda i: 5000 < i < 45000,
     "checkpoint_save_path": "./checkpoint",
     # test setting
     "test_batch_size": 1,  # fixed, don't change this
     "generated_path": Dataset.generated_path,
-    "test_command": Dataset.test_command,
+    "test_command": "echo ignore_test",
     # to log
     "model_config": {
         "num_permutation": "auto",

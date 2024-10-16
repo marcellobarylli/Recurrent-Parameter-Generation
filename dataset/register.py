@@ -1,3 +1,4 @@
+import os
 import torch
 from .dataset import BaseDataset, ConditionalDataset
 import json
@@ -76,6 +77,12 @@ class DoRACommonSenseReasoningR16(BaseDataset):
     generated_path = "./dataset/downtask_dora_r16/generated/generated_model.pth"
     test_command = f"CUDA_VISIBLE_DEVICES={test_gpu_ids} python ./dataset/downtask_dora_r16/test.py " + \
                    "./dataset/downtask_dora_r16/generated/generated_model.pth"
+
+class DoRACommonSenseReasoningR64(BaseDataset):
+    data_path = "./dataset/downtask_dora_r64/checkpoint"
+    generated_path = "./dataset/downtask_dora_r64/generated/generated_model.pth"
+    test_command = f"CUDA_VISIBLE_DEVICES={test_gpu_ids} python ./dataset/downtask_dora_r64/test.py " + \
+                   "./dataset/downtask_dora_r64/generated/generated_model.pth"
 
 class Cifar10_ResNet18(BaseDataset):
     data_path = "./dataset/cifar10_resnet18/checkpoint"
