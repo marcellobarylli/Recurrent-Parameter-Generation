@@ -6,3 +6,4 @@
 **/wandb/
 **/full_model.pth
 /rubbish
+**/*cache*
