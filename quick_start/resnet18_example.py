@@ -56,7 +56,7 @@ config = {
     "batch_size": 8,
     "num_workers": 16,
     "total_steps": 80000,
-    "learning_rate": 0.00004,
+    "learning_rate": 0.00003,
     "weight_decay": 0.0,
     "save_every": 80000//30,
     "print_every": 50,
@@ -77,7 +77,7 @@ config = {
         "expand": 2,
         "num_layers": 2,
         # diffusion config
-        "diffusion_batch": 1024,
+        "diffusion_batch": 512,
         "layer_channels": [1, 32, 64, 128, 64, 32, 1],
         "model_dim": "auto",
         "condition_dim": "auto",

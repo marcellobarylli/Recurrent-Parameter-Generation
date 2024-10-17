@@ -27,6 +27,10 @@ generate_config = {
     "need_test": True,
 }
 config.update(generate_config)
+if len(sys.argv) == 3:
+    exec("config.update(dict(" + sys.argv[2] + "))")
+else:  # more than 3 sys.argv
+    assert len(sys.argv) == 2, "Got too many argv. Please split by ','."
 
 
 

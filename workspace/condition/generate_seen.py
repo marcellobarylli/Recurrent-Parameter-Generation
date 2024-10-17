@@ -21,11 +21,12 @@ assert config.get("tag") is not None, "Remember to set a tag."
 
 generate_config = {
     "device": "cuda",
+    "num_generated": 20,
     "checkpoint": f"./checkpoint/{config['tag']}.pth",
     "generated_path": os.path.join(test_set.generated_path.rsplit("/", 1)[0], "generated_{}_{}.pth"),
     "test_command": os.path.join(test_set.test_command.rsplit("/", 1)[0], "generated_{}_{}.pth"),
     "need_test": True,
-    "specific_item": 37, 
+    "specific_item": None,
 }
 config.update(generate_config)
 
@@ -59,12 +60,12 @@ def generate(save_path=config["generated_path"], test_command=config["test_comma
 
 
 if __name__ == "__main__":
-    for i in range(20):
+    for i in range(config["num_generated"]):
         if config["specific_item"] is not None:
             assert isinstance(config["specific_item"], int)
             i = config["specific_item"]
             print(f"generate index {i}\n")
-        print("Save to", config["generated_path"].format(config["tag"], "classXXX"))
+        print("Save to", config["generated_path"].format(config["tag"], "class####"))
         generate(
             save_path=config["generated_path"],
             test_command=config["test_command"],
