@@ -61,8 +61,8 @@ The training and testing process for the other data followed a similar pattern.
 In this section, we will cover how to reproduce the experiments from [Section-4]() of our paper, how to adapt other downstream tasks (using DORA on LLaMA as an example), and how to adapt your own checkpoint dataset into our codes.
 
 
+### Reproduce Section-4
 <details>
-  <summary style="font-size:1.3em; font-weight:bold;">Reproduce Section-4</summary>
 
 In this section, we will guide you step by step through reproducing the experiments from Section-4. Similar to Quick Start section. You can execute the following commands.
 
@@ -114,8 +114,8 @@ cd ../..
 </details>
 
 
+### Adapt other downstream tasks
 <details>
-  <summary style="font-size:1.3em; font-weight:bold;">Adapt other downstream tasks</summary>
 
 In this section, we will use the DoRA adaptor for Llama as an example to teach you how to apply our method to more complex downstream tasks.
 
@@ -207,8 +207,8 @@ For more details, you can check the specific contents of `dataset/downtask_dora_
 </details>
 
 
+### Adapt your own dataset
 <details>
-  <summary style="font-size:1.3em; font-weight:bold;">Adapt your own dataset</summary>
 
 In this section, we will introduce how to register your own model in this code framework and use RPG to generate its parameters.
 
