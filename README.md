@@ -1,3 +1,21 @@
+# Recurrent Parameter Generation
+The official repository of paper [Recurrent Diffusion for Large-Scale Parameter Generation]().
+
+
+##  Introduction
+Parameter generation has long struggled to scale, significantly limiting its applications. 
+In this study, we introduce Recurrent diffusion for large-scale Parameter Generation, or RPG, 
+which models large-scale parameter generation through a recurrent diffusion process. 
+We divide the trained parameters into non-overlapping parts and propose a recurrent model to learn their relationships. 
+The outputs of this recurrent model, serving as conditions, are then input into a diffusion model to generate neural network parameters. 
+Utilizing only a single GPU, our method can generate parameters for popular vision and language models, such as ConvNeXt-L and LoRA parameters for LLaMA-7B. 
+Across various architectures and tasks, the generated parameters consistently achieve comparable performance to those of trained networks. 
+Additionally, our approach demonstrates potential in generating models capable of handling unseen tasks, 
+indicating that recurrent diffusion greatly enhances the practicality of parameter generation.
+
+
+
+
 
 
 
@@ -21,6 +39,10 @@ git clone https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation.git
 cd Recurrent-Parameter-Generation
 pip install -r requirements.txt
 ```
+
+
+
+
 
 
 
@@ -57,14 +79,25 @@ The training and testing process for the other data followed a similar pattern.
 
 
 
+
+
+
+
+
 ## Advanced Usage
 In this section, we will cover how to reproduce the experiments from [Section-4]() of our paper, how to adapt other downstream tasks (using DORA on LLaMA as an example), and how to adapt your own checkpoint dataset into our codes.
+
+
+
 
 
 ### Reproduce Section-4
 <details>
 <summary>Click here for details</summary>
+
+
 In this section, we will guide you step by step through reproducing the experiments from Section-4. Similar to Quick Start section. You can execute the following commands.
+
 
 1. Modify your config file. (You can skip this step if you have done.)
 ```shell
@@ -114,10 +147,16 @@ cd ../..
 </details>
 
 
+
+
+
 ### Adapt other downstream tasks
 <details>
 <summary>Click here for details</summary>
+
+
 In this section, we will use the DoRA adaptor for Llama as an example to teach you how to apply our method to more complex downstream tasks.
+
 
 1. Create another conda environment for dora_llama following the [official repositories](https://github.com/NVlabs/DoRA), especially for [commonsense reasoning](https://github.com/NVlabs/DoRA/tree/main/commonsense_reasoning).
 Meanwhile, you need to clone the repositories for dora_llama to any path you like. Then you should get a directory structure like this ("..." means there are many other files or folders here, but those are not important to us.):
@@ -207,10 +246,16 @@ For more details, you can check the specific contents of `dataset/downtask_dora_
 </details>
 
 
+
+
+
 ### Adapt your own dataset
 <details>
 <summary>Click here for details</summary>
+
+
 In this section, we will introduce how to register your own model in this code framework and use RPG to generate its parameters.
+
 
 1. Create a dataset
 ```shell
