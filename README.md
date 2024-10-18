@@ -63,8 +63,7 @@ In this section, we will cover how to reproduce the experiments from [Section-4]
 
 ### Reproduce Section-4
 <details>
-
-In this section, we will guide you step by step through reproducing the experiments from Section-4. Similar to Quick Start section. You can execute the following commands.
+<summary>In this section, we will guide you step by step through reproducing the experiments from Section-4. Similar to Quick Start section. You can execute the following commands.</summary>
 
 1. Modify your config file. (You can skip this step if you have done.)
 ```shell
