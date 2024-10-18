@@ -11,12 +11,12 @@ conda activate rpg
 conda install pytorch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 pytorch-cuda=12.1 -c pytorch -c nvidia
 ```
 2. Install mamba-ssm. (You may run into compilation issues, refer to the [official mamba-ssm repository](https://github.com/state-spaces/mamba) for details.)
-```
+```shell
 pip install mamba-ssm[causal-conv1d]
 pip install causal-conv1d
 ```
 3. Install other dependencies for this repository.
-```
+```shell
 git clone https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation.git
 cd Recurrent-Parameter-Generation
 pip install -r requirements.txt
@@ -29,27 +29,27 @@ pip install -r requirements.txt
 This section covers the entire process from preparing the checkpoint dataset to training and testing the RPG model.
 
 1. Modify your config file.
-```
+```shell
 # Set up your configs interactively.
 python ./workspace/set_configs.py
 ```
 
 2. Prepare checkpoint datasets.
-```
+```shell
 cd ./dataset/cifar10_resnet18
 CUDA_VISIBLE_DEVICES=0 python train.py
 cd ../..
 ```
 
 3. Train RPG model. ('0' refers to GPU index)
-```
+```shell
 cd ./workspace
 bash launch.sh ./example/cifar10_resnet18.py '0'
 cd ..
 ```
 
 4. Generate and test.
-```
+```shell
 CUDA_VISIBLE_DEVICES=0 python ./workspace/evaluate/generate.py example.cifar10_resnet18
 ```
 
@@ -67,12 +67,12 @@ In this section, we will cover how to reproduce the experiments from [Section-4]
 In this section, we will guide you step by step through reproducing the experiments from Section-4. Similar to Quick Start section. You can execute the following commands.
 
 1. Modify your config file. (You can skip this step if you have done.)
-```
+```shell
 python ./workspace/set_configs.py
 ```
 
 2. Prepare checkpoint dataset. (Choose one of two options.)
-```
+```shell
 # Download our dataset. (download about 64 GB)
 cd ./dataset/condition_classinput_vittiny
 wget https://xxxx/xxxx/xxxx/HPCAI.tar
@@ -80,7 +80,7 @@ tar -xvf HPCAI.tar
 rm HPCAI.tar
 cd ../..
 ```
-```
+```shell
 # Train from the codes. (need a really long time)
 cd ./dataset/condition_classinput_vittiny
 CUDA_VISIBLE_DEVICES=0 bash train.sh
@@ -89,14 +89,14 @@ cd ../..
 ```
 
 3. Train RPG model. ('1,2,3,4' refers to GPU index)
-```
+```shell
 cd ./workspace
 bash launch.sh ./condition/generalization.py '1,2,3,4'
 cd ..
 ```
 
 4. Generate and test.
-```
+```shell
 # Generate parameters for 20 random seen tasks
 CUDA_VISIBLE_DEVICES=0 python ./workspace/condition/generate_seen.py
 
@@ -105,7 +105,7 @@ CUDA_VISIBLE_DEVICES=0 python ./workspace/condition/generate_unseen.py
 ```
 
 5. Check more detailed results.
-```
+```shell
 cd ./dataset/condition_classinput_vittiny
 CUDA_VISIBLE_DEVICES=0 python detail.py ./generated/generated_generalization_class0279.pth
 cd ../..
@@ -147,7 +147,7 @@ Meanwhile, you need to clone the repositories for dora_llama to any path you lik
 ```
 - You could try the official finetuning and testing code of dora_llama under `/path/to/your/DoRA/commonsense_reasoning`. If everything is working properly, it means all of your operation is correct.
 (Since waiting for the finetuning takes a lot of time, you can skip this step first. If there are any problems in the future, you can come back to test your dora_llama configuration.)
-```
+```shell
 # execute under /path/to/your/DoRA/commonsense_reasoning
 
 # finetuning
@@ -159,7 +159,7 @@ sh llama_7B_Dora_eval.sh ./finetuned_result/dora_r32 0
 
 
 2. Modify your config file.
-```
+```python
 vim ./dataset/config.json
 
 ###################### content in config.json ######################
