@@ -85,7 +85,7 @@ The training and testing process for the other data followed a similar pattern.
 
 
 ## Advanced Usage
-In this section, we will cover how to reproduce the experiments from [Section-4]() of our paper, how to adapt other downstream tasks (using DORA on LLaMA as an example), and how to adapt your own checkpoint dataset into our codes.
+In this section, we will cover how to reproduce the experiments from [Section-4]() of our paper, how to adapt other downstream tasks (using DoRA on LLama as an example), and how to adapt your own checkpoint dataset into our codes.
 
 
 
@@ -297,7 +297,7 @@ cd ../..
 vim ./dataset/register.py
 
 ####################################### add to the end of register.py #######################################
-+ class YourDatasetName(BaseDataset):
++ class Your_Dataset_Name(BaseDataset):
 +     data_path = "./dataset/your_dataset_name/checkpoint"
 +     generated_path = "./dataset/your_dataset_name/generated/generated_model.pth"
 +     test_command = f"CUDA_VISIBLE_DEVICES={test_gpu_ids} python ./dataset/your_dataset_name/test.py " + \
@@ -312,7 +312,7 @@ vim ./workspace/your_training_tag.py
 
 ######################## on line 43 in your_training_tag.py ########################
 - from dataset import Cifar10_ResNet18 as Dataset
-+ from dataset import YourDatasetName as Dataset
++ from dataset import Your_Dataset_Name as Dataset
 ######################## on line 43 in your_training_tag.py ########################
 
 ###################### on line 49-91 in your_training_tag.py #######################
