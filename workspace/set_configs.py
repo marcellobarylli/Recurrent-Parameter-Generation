@@ -1,5 +1,6 @@
+import os
 import os.path as op
-root = op.dirname(op.dirname(__file__))
+root = os.sep + os.sep.join(__file__.split(os.sep)[1:__file__.split(os.sep).index("Recurrent-Parameter-Generation")+1])
 
 
 
@@ -30,7 +31,7 @@ assert op.basename(root) == "Recurrent-Parameter-Generation", \
         │   ├─main
         │   ├─evaluate
         │   ├─...(total 6 folders)
-        │   ├─config.json
+        │   └─config.json
         ├─README.md
         └─requirements.txt
     """

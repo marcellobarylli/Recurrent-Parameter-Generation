@@ -144,6 +144,8 @@ scheduler = CosineAnnealingLR(
 if __name__ == "__main__":
     kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
     accelerator = Accelerator(kwargs_handlers=[kwargs,])
+    if accelerator.state.num_processes == 1:
+        print(f"\033[91mWARNING: For the strong sensitivity of MobileNetv3, we suggest to train on multiple GPUs.\033[0m")
     model, optimizer, train_loader = accelerator.prepare(model, optimizer, train_loader)
 
 

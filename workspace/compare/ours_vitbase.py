@@ -186,6 +186,8 @@ else:  # not resume
 if __name__ == "__main__":
     kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
     accelerator = Accelerator(kwargs_handlers=[kwargs,])
+    if config["dim_per_token"] > 12288 and accelerator.state.num_processes == 1:
+        print(f"\033[91mWARNING: With token size {config['dim_per_token']}, we suggest to train on multiple GPUs.\033[0m")
     model, optimizer, train_loader = accelerator.prepare(model, optimizer, train_loader)
 
 

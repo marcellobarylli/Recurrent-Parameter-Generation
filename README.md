@@ -31,31 +31,29 @@ This section covers the entire process from preparing the checkpoint dataset to 
 1. Modify your config file.
 ```
 # Set up your configs interactively.
-python ./quick_start/setting_configs.py
+python ./workspace/set_configs.py
 ```
 
 2. Prepare checkpoint datasets.
 ```
-cd ./dataset/cifar10_cnnmedium
+cd ./dataset/cifar10_resnet18
 CUDA_VISIBLE_DEVICES=0 python train.py
 cd ../..
 ```
 
 3. Train RPG model. ('0' refers to GPU index)
 ```
-cd quick_start
-sh resnet18_example.sh '0'
+cd ./workspace
+bash launch.sh ./example/cifar10_resnet18.py '0'
 cd ..
 ```
 
 4. Generate and test.
 ```
-CUDA_VISIBLE_DEVICES=0 python ./workspace/evaluate/generate.py quick_start.resnet18_example
+CUDA_VISIBLE_DEVICES=0 python ./workspace/evaluate/generate.py example.cifar10_resnet18
 ```
 
-More examples and experiments are located in the `workspace` directory, 
-written with a structure similar to that of `quick_start`.
-
+The training and testing process for the other data followed a similar pattern.
 
 
 
@@ -70,7 +68,7 @@ In this section, we will guide you step by step through reproducing the experime
 
 1. Modify your config file. (You can skip this step if you have done.)
 ```
-python ./quick_start/setting_configs.py
+python ./workspace/set_configs.py
 ```
 
 2. Prepare checkpoint dataset. (Choose one of two options.)
@@ -92,9 +90,9 @@ cd ../..
 
 3. Train RPG model. ('1,2,3,4' refers to GPU index)
 ```
-cd ./workspace/condition 
-sh generalization.sh '1,2,3,4'
-cd ../..
+cd ./workspace
+bash launch.sh ./condition/generalization.py '1,2,3,4'
+cd ..
 ```
 
 4. Generate and test.
@@ -168,7 +166,7 @@ vim ./dataset/config.json
 {
   ...
   "dora_root": "/ABSOLUTE/path/to/your/DoRA/commonsense_reasoning",
-  "dora_env_name": "dora_llama"
+  "dora_env_name": "your_DoRA_conda_envrionment_name"
 }
 ###################### content in config.json ######################
 ```
@@ -182,9 +180,9 @@ cd ../..
 
 4. Train RPG model. ('0' refers to GPU index)
 ```
-cd ./workspace/downtask
-sh dora_r4.sh '0'
-cd ../..
+cd ./workspace
+bash launch.sh ./downtask/dora_r4.py '0'
+cd ..
 ```
 
 5. Generate and test. (We recommend separating the generation and testing processes because the testing process is complex and time-consuming, and the separated operation makes it easier to check the results.)
@@ -215,9 +213,8 @@ In this section, we will introduce how to register your own model in this code f
 
 1. Create a dataset
 ```
-cd ./dataset
-mkdir your_dataset_name
-cd ./your_dataset_name
+mkdir ./dataset/your_dataset_name
+cd ./dataset/your_dataset_name
 ```
 - In this directory, there are three necessary items. 
   1. A checkpoint folder is used to store checkpoints used for training. All the pretrained checkpoints should be placed in this folder.
@@ -246,9 +243,14 @@ cd ./your_dataset_name
 python test.py ./checkpoint/your_1st_checkpoint_name.pth
 ```
 
+- Remember to go back to the root directory.
+```
+cd ../..
+# You should now be in the Recurrent-Parameter-Generation directory
+```
+
 2. Register your dataset. You need to write your own dataset class in the `dataset/register.py` file, which contains three class variables.
 ```
-# execute under /path/to/Recurrent-Parameter-Generation
 vim ./dataset/register.py
 
 ####################################### add to the end of register.py #######################################
@@ -260,7 +262,7 @@ class YourDatasetName(BaseDataset):
 ####################################### add to the end of register.py #######################################
 ```
 
-3. Create your training script. ('your_training_tag' is decided by yourself. And you can get more information for modifying the config from the appendix of [our paper]())
+3. Create your training script. ('your_training_tag' is decided by yourself. And you can get more information for modifying the hyperparameters from the appendix of [our paper]())
 ```diff
 cp ./quick_start/resnet18_example.py ./workspace/your_training_tag.py
 vim ./workspace/your_training_tag.py
@@ -325,28 +327,11 @@ vim ./workspace/your_training_tag.py
   }
 ###################### on line 49-91 in your_training_tag.py #######################
 ```
-- Then your need a start shell script.
-```diff
-cp ./quick_start/resnet18_example.sh ./workspace/your_training_tag.sh
-vim ./workspace/your_training_tag.sh
-
-###################### content in your_training_tag.sh #######################
-  accelerate launch \
-    --main_process_port=0 \
-    --num_processes=1 \
-    --gpu_ids="$1" \
-    --num_machines=1 \
-    --mixed_precision=bf16 \
-    --dynamo_backend=no \
--   resnet18_example.py
-+   your_training_tag.py
-###################### content in your_training_tag.sh #######################
-```
 
 4. Train RPG model. ('0' refers to GPU index)
 ```
 cd ./workspace
-sh your_training_tag.sh 0
+bash launch.sh your_training_tag.py '0'
 cd ..
 ```
 

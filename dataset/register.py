@@ -156,3 +156,18 @@ class ClassInput_ViTTiny_Test(ClassInput_ViTTiny):
     generated_path = "./dataset/condition_classinput_vittiny/generated/generated_model_class{}.pth"
     test_command = f"CUDA_VISIBLE_DEVICES={test_gpu_ids} python ./dataset/condition_classinput_vittiny/test.py " + \
                    "./dataset/condition_classinput_vittiny/generated/generated_model_class{}.pth"
+
+
+
+
+
+
+# #################################### user-defined dataset classes here ####################################
+#
+# class YourDatasetName(BaseDataset):
+#     data_path = "./dataset/your_dataset_name/checkpoint"
+#     generated_path = "./dataset/your_dataset_name/generated/generated_model.pth"
+#     test_command = f"CUDA_VISIBLE_DEVICES={test_gpu_ids} python ./dataset/your_dataset_name/test.py " + \
+#                    "./dataset/your_dataset_name/generated/generated_model.pth"
+#
+# #################################### user-defined dataset classes here ####################################
