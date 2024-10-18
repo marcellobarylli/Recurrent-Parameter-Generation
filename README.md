@@ -164,7 +164,7 @@ vim ./dataset/config.json
 
 ###################### content in config.json ######################
 {
-  ...
+@@ -1 +1 @@
 --- "dora_root": "/ABSOLUTE/path/to/your/DoRA/commonsense_reasoning",
   "dora_env_name": "your_DoRA_conda_envrionment_name"
 }
