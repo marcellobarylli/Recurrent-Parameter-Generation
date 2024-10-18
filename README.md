@@ -307,7 +307,7 @@ vim ./dataset/register.py
 
 3. Create your training script. ('your_training_tag' is decided by yourself. And you can get more information for modifying the hyperparameters from the appendix of [our paper]())
 ```diff
-cp ./quick_start/resnet18_example.py ./workspace/your_training_tag.py
+cp ./workspace/example/cifar10_resnet18.py ./workspace/your_training_tag.py
 vim ./workspace/your_training_tag.py
 
 ######################## on line 43 in your_training_tag.py ########################
