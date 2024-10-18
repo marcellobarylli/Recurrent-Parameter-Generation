@@ -378,7 +378,7 @@ bash launch.sh your_training_tag.py '0'
 cd ..
 ```
 
-4. Generate and test.
+5. Generate and test.
 ```shell
 CUDA_VISIBLE_DEVICES=0 python ./evaluate/generate.py workspace.your_training_tag
 ```
