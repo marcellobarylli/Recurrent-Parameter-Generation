@@ -5,7 +5,7 @@
 ## Environment
 Before you get started, you need to set up a conda environment first.
 1. Create your conda environment.
-```
+```shell
 conda create -n rpg python=3.11
 conda activate rpg
 conda install pytorch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 pytorch-cuda=12.1 -c pytorch -c nvidia
