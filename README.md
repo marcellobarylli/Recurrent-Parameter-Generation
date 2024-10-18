@@ -92,13 +92,12 @@ In this section, we will cover how to reproduce the experiments from [Section-4]
 
 
 ### Reproduce Section-4
-<details>
-<summary>Click here for details</summary>
-
-
 In this section, we will guide you step by step through reproducing the experiments from Section-4. Similar to Quick Start section. You can execute the following commands.
 
-
+<details>
+<summary>Click here for details</summary>
+  
+  
 1. Modify your config file. (You can skip this step if you have done.)
 ```shell
 python ./workspace/set_configs.py
@@ -151,13 +150,12 @@ cd ../..
 
 
 ### Adapt other downstream tasks
-<details>
-<summary>Click here for details</summary>
-
-
 In this section, we will use the DoRA adaptor for Llama as an example to teach you how to apply our method to more complex downstream tasks.
 
-
+<details>
+<summary>Click here for details</summary>
+  
+  
 1. Create another conda environment for dora_llama following the [official repositories](https://github.com/NVlabs/DoRA), especially for [commonsense reasoning](https://github.com/NVlabs/DoRA/tree/main/commonsense_reasoning).
 Meanwhile, you need to clone the repositories for dora_llama to any path you like. Then you should get a directory structure like this ("..." means there are many other files or folders here, but those are not important to us.):
 ```
@@ -250,13 +248,12 @@ For more details, you can check the specific contents of `dataset/downtask_dora_
 
 
 ### Adapt your own dataset
-<details>
-<summary>Click here for details</summary>
-
-
 In this section, we will introduce how to register your own model in this code framework and use RPG to generate its parameters.
 
-
+<details>
+<summary>Click here for details</summary>
+  
+  
 1. Create a dataset
 ```shell
 mkdir ./dataset/your_dataset_name
