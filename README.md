@@ -92,7 +92,7 @@ In this section, we will cover how to reproduce the experiments from [Section-4]
 
 
 ### Reproduce Section-4
-In this section, we will guide you step by step through reproducing the experiments from Section-4. Similar to Quick Start section. You can execute the following commands.
+In this section, we will guide you step by step through reproducing the experiments from Section-4.
 
 <details>
 <summary>Click here for details</summary>
