@@ -159,34 +159,34 @@ sh llama_7B_Dora_eval.sh ./finetuned_result/dora_r32 0
 
 
 2. Modify your config file.
-```python
+```diff
 vim ./dataset/config.json
 
 ###################### content in config.json ######################
 {
   ...
-  "dora_root": "/ABSOLUTE/path/to/your/DoRA/commonsense_reasoning",
+--- "dora_root": "/ABSOLUTE/path/to/your/DoRA/commonsense_reasoning",
   "dora_env_name": "your_DoRA_conda_envrionment_name"
 }
 ###################### content in config.json ######################
 ```
 
 3. Prepare checkpoint dataset.
-```
+```shell
 cd ./dataset/downtask_dora_r4
 CUDA_VISIBLE_DEVICES=0 python train.py
 cd ../..
 ```
 
 4. Train RPG model. ('0' refers to GPU index)
-```
+```shell
 cd ./workspace
 bash launch.sh ./downtask/dora_r4.py '0'
 cd ..
 ```
 
 5. Generate and test. (We recommend separating the generation and testing processes because the testing process is complex and time-consuming, and the separated operation makes it easier to check the results.)
-```
+```shell
 # Generate without testing
 CUDA_VISIBLE_DEVICES=0 python ./workspace/evaluate/generate.py workspace.downtask.dora_r4 "need_test=False,num_generated=5"
 
@@ -212,7 +212,7 @@ For more details, you can check the specific contents of `dataset/downtask_dora_
 In this section, we will introduce how to register your own model in this code framework and use RPG to generate its parameters.
 
 1. Create a dataset
-```
+```shell
 mkdir ./dataset/your_dataset_name
 cd ./dataset/your_dataset_name
 ```
@@ -238,27 +238,27 @@ cd ./dataset/your_dataset_name
 ```
 
 - Make sure you can run this command properly.
-```
+```shell
 # execute under /path/to/Recurrent-Parameter-Generation/dataset/your_dataset_name
 python test.py ./checkpoint/your_1st_checkpoint_name.pth
 ```
 
 - Remember to go back to the root directory.
-```
+```shell
 cd ../..
 # You should now be in the Recurrent-Parameter-Generation directory
 ```
 
 2. Register your dataset. You need to write your own dataset class in the `dataset/register.py` file, which contains three class variables.
-```
+```diff
 vim ./dataset/register.py
 
 ####################################### add to the end of register.py #######################################
-class YourDatasetName(BaseDataset):
-    data_path = "./dataset/your_dataset_name/checkpoint"
-    generated_path = "./dataset/your_dataset_name/generated/generated_model.pth"
-    test_command = f"CUDA_VISIBLE_DEVICES={test_gpu_ids} python ./dataset/your_dataset_name/test.py " + \
-                   "./dataset/your_dataset_name/generated/generated_model.pth"
++ class YourDatasetName(BaseDataset):
++     data_path = "./dataset/your_dataset_name/checkpoint"
++     generated_path = "./dataset/your_dataset_name/generated/generated_model.pth"
++     test_command = f"CUDA_VISIBLE_DEVICES={test_gpu_ids} python ./dataset/your_dataset_name/test.py " + \
++                    "./dataset/your_dataset_name/generated/generated_model.pth"
 ####################################### add to the end of register.py #######################################
 ```
 
@@ -329,14 +329,14 @@ vim ./workspace/your_training_tag.py
 ```
 
 4. Train RPG model. ('0' refers to GPU index)
-```
+```shell
 cd ./workspace
 bash launch.sh your_training_tag.py '0'
 cd ..
 ```
 
 4. Generate and test.
-```
+```shell
 CUDA_VISIBLE_DEVICES=0 python ./evaluate/generate.py workspace.your_training_tag
 ```
 
