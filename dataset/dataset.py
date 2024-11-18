@@ -162,6 +162,7 @@ class BaseDataset(Dataset, ABC):
                 self.checkpoint_list.append(os.path.join(checkpoint_path, "fake_checkpoint.pth"))
                 self.length = self.real_length = len(self.checkpoint_list)
                 self.set_infinite_dataset()
+                os.system(f"rm {os.path.join(checkpoint_path, 'fake_checkpoint.pth')}")
         except AssertionError:  # recompute cache file
             print("==> Organizing structure..")
             self.structure = self.get_structure()

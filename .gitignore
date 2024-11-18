@@ -7,3 +7,4 @@
 **/full_model.pth
 /rubbish
 **/*cache*
+/workspace/classinput/Qwen25llm/

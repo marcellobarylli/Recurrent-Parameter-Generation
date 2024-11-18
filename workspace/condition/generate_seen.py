@@ -6,6 +6,7 @@ os.chdir(root)
 # torch
 import torch
 import random
+from torch import nn
 # father
 from workspace.condition import generalization as item
 train_set = item.train_set
