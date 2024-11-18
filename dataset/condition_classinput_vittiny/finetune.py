@@ -50,11 +50,11 @@ config = {
     "batch_size": 500 if __name__ == "__main__" else 50,
     "num_workers": 16,
     "pre_learning_rate": 0.01,
-    "learning_rate": 1e-4,
-    "pre_epochs": 2,
-    "epochs": 13,
+    "learning_rate": 2e-5,
+    "pre_epochs": 0,
+    "epochs": 50,
     "weight_decay": 0.1,
-    "save_learning_rate": 2e-5,
+    "save_learning_rate": 1e-6,
     "total_save_number": 5,
     "tag": os.path.basename(os.path.dirname(__file__)),
     "optimize_class": get_optimize_class()[0],
@@ -94,6 +94,7 @@ test_loader = DataLoader(
 
 # Model
 model, head = Model()
+model.load_state_dict(torch.load(sys.argv[1], map_location="cpu", weights_only=True))
 model = model.to(device)
 class FocalLoss(nn.Module):
     def __init__(self, weight=None, gamma=2):
@@ -187,7 +188,8 @@ def save_train(model=model, optimizer=optimizer):
         loss.backward()
         optimizer.step()
         # Save checkpoint
-        _, acc, _, _ = test(model=model)
+        # _, acc, _, _ = test(model=model)
+        acc = 1.0
         if not os.path.isdir('checkpoint'):
             os.mkdir('checkpoint')
         save_state = {key: value.cpu().to(torch.float32) for key, value in model.state_dict().items()}
@@ -202,11 +204,12 @@ def save_train(model=model, optimizer=optimizer):
 
 # main
 if __name__ == '__main__':
+    test(model=model)
     for epoch in range(config["pre_epochs"]):
         train(model=model, optimizer=head_optimizer, scheduler=None)
-        # test(model=model)
+        test(model=model)
     for epoch in range(config["epochs"]):
         train(model=model, optimizer=optimizer, scheduler=scheduler)
-        # test(model=model)
-    save_train(model=model, optimizer=optimizer)
+        test(model=model)
+    # save_train(model=model, optimizer=optimizer)
 print("time stamp:", time.time())

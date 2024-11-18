@@ -55,10 +55,10 @@ config = {
     # train setting
     "batch_size": 16,
     "num_workers": 16,
-    "total_steps": 80000,
-    "learning_rate": 0.00003,
+    "total_steps": 120000,
+    "learning_rate": 0.0001,
     "weight_decay": 0.0,
-    "save_every": 80000//25,
+    "save_every": 120000//30,
     "print_every": 50,
     "autocast": lambda i: 5000 < i < 45000,
     "checkpoint_save_path": "./checkpoint",

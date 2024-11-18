@@ -1,4 +1,6 @@
 # set global seed
+import time
+print("time stamp:", time.time())
 import random
 import numpy as np
 import torch
@@ -55,7 +57,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 config = {
     "dataset_root": "from_additional_config",
     "batch_size": 250 if __name__ == "__main__" else 50,
-    "num_workers": 20,
+    "num_workers": 16,
     "learning_rate": 5e-3,
     "epochs": 200,
     "weight_decay": 0.1,
@@ -205,3 +207,4 @@ if __name__ == '__main__':
         train(model=model, optimizer=optimizer, scheduler=scheduler)
         test(model=model)
     save_train(model=model, optimizer=optimizer)
+print("time stamp:", time.time())
