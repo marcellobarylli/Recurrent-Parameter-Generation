@@ -35,7 +35,7 @@ pip install causal-conv1d
 ```
 3. Install other dependencies for this repository.
 ```shell
-git clone https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation.git
+git clone https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation.git --depth=1
 cd Recurrent-Parameter-Generation
 pip install -r requirements.txt
 ```
@@ -59,7 +59,9 @@ python ./workspace/set_configs.py
 2. Prepare checkpoint datasets.
 ```shell
 cd ./dataset/cifar10_resnet18
+# cd ./dataset/<dataset_tag>
 CUDA_VISIBLE_DEVICES=0 python train.py
+# CUDA_VISIBLE_DEVICES=<GPU_index> python train.py
 cd ../..
 ```
 
@@ -67,12 +69,20 @@ cd ../..
 ```shell
 cd ./workspace
 bash launch.sh ./example/cifar10_resnet18.py '0'
+# bash launch.sh <./relative/path/to/launch/script.py> '<GPU_index>'
 cd ..
 ```
 
 4. Generate and test.
 ```shell
 CUDA_VISIBLE_DEVICES=0 python ./workspace/evaluate/generate.py example.cifar10_resnet18
+# CUDA_VISIBLE_DEVICES=<GPU_index> python ./workspace/evaluate/generate.py <relative.path.to.launch.script>
+```
+
+5. Evaluate more details.
+```shell
+CUDA_VISIBLE_DEVICES=0 python ./workspace/evaluate/evaluate.py cifar10_resnet18
+# CUDA_VISIBLE_DEVICES=<GPU_index> python ./workspace/evaluate/evaluate.py <dataset_tag>
 ```
 
 The training and testing process for the other data followed a similar pattern.
@@ -85,14 +95,10 @@ The training and testing process for the other data followed a similar pattern.
 
 
 ## Advanced Usage
-In this section, we will cover how to reproduce the experiments from [Section-4]() of our paper, how to adapt other downstream tasks (using DoRA on LLama as an example), and how to adapt your own checkpoint dataset into our codes.
 
 
-
-
-
-### Reproduce Section-4
-In this section, we will guide you step by step through reproducing the experiments from Section-4.
+### Reproduce Section 5: *RPG’s Potential in Unseen Tasks*
+In this section, we will show you how to reproduce the experiments of section 5: *RPG’s Potential in Unseen Tasks*.
 
 <details>
 <summary>Click here for details</summary>
@@ -106,14 +112,10 @@ python ./workspace/set_configs.py
 2. Prepare checkpoint dataset. (Choose one of two options.)
 ```shell
 # Download our dataset. (download about 64 GB)
-cd ./dataset/condition_classinput_vittiny
-wget https://xxxx/xxxx/xxxx/HPCAI.tar
-tar -xvf HPCAI.tar
-rm HPCAI.tar
-cd ../..
+Coming soon...
 ```
 ```shell
-# Train from the codes. (need a really long time)
+# Train by the codes. (need a long time)
 cd ./dataset/condition_classinput_vittiny
 CUDA_VISIBLE_DEVICES=0 bash train.sh
 sh split.sh
@@ -150,7 +152,7 @@ cd ../..
 
 
 ### Adapt other downstream tasks
-In this section, we will use the DoRA adaptor for Llama as an example to teach you how to apply our method to more complex downstream tasks.
+In this section, we will use the DoRA adaptor for Llama as an example to show you how to apply our method to more downstream tasks.
 
 <details>
 <summary>Click here for details</summary>
@@ -239,7 +241,7 @@ cd ../..
 ```
 
 Please note that the methods mentioned above involve automatically activating a specified conda environment through the `dataset/downtask_dora_r4/test.py` and `dataset/downtask_dora_r4/train.py` files, and executing the official training and testing shell script of dora_llama. 
-For more details, you can check the specific contents of `dataset/downtask_dora_r4/test.py` and `dataset/downtask_dora_r4/train.py`.
+For more details, you can check the specific contents of `dataset/downtask_dora_r4/test.py` (on line 85-90) and `dataset/downtask_dora_r4/train.py` (on line 100-105).
 
 </details>
 
@@ -248,7 +250,7 @@ For more details, you can check the specific contents of `dataset/downtask_dora_
 
 
 ### Adapt your own dataset
-In this section, we will introduce how to register your own model in this code framework and use RPG to generate its parameters.
+In this section, we will introduce how to register your own model checkpoints in this framework and use RPG to generate its parameters.
 
 <details>
 <summary>Click here for details</summary>

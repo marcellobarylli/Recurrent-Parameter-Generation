@@ -96,7 +96,7 @@ with open(op.join(root, "dataset/config.json"), "r") as f:
         },
     })
 with open(op.join(root, "dataset/config.json"), "w") as f:
-    print("\033[32mUpdated dataset/config.json is as follow:\033[0m")
+    print("\033[32mUpdated dataset/config.json as follow:\033[0m")
     pprint(dataset_config)
     json.dump(dataset_config, f)
 
@@ -106,10 +106,10 @@ with open(op.join(root, "workspace/config.json"), "r") as f:
     workspace_config = json.load(f)
     workspace_config.update({
         "use_wandb": use_wandb,
-        "wandb_api_key": wandb_api_key,
+        "wandb_api_key": globals().get("wandb_api_key", None),
     })
 with open(op.join(root, "workspace/config.json"), "w") as f:
-    print("\033[32mUpdated workspace/config.json is as follow:\033[0m")
+    print("\033[32mUpdated workspace/config.json as follow:\033[0m")
     pprint(workspace_config)
     json.dump(workspace_config, f)
 print()
