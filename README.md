@@ -411,12 +411,12 @@ CUDA_VISIBLE_DEVICES=0 python ./evaluate/generate.py workspace.your_training_tag
 We thank 
 [Zhiyuan Liang](https://jerryliang24.github.io/), 
 [Zhuang Liu](https://liuzhuang13.github.io/), 
-[Gongfan Fang](https://fangggf.github.io/), 
-[Zangwei Zheng](https://zhengzangw.github.io/), 
-[Tianlong Chen](https://tianlong-chen.github.io/), 
-[Zhangyang Wang](https://www.ece.utexas.edu/people/faculty/atlas-wang),
+[Gongfan Fang](https://fangggf.github.io/),
 [Xuanlei Zhao](https://oahzxl.github.io/),
-and [Ziheng Qin](https://henryqin1997.github.io/ziheng_qin/)
+[Zangwei Zheng](https://zhengzangw.github.io/), 
+[Ziheng Qin](https://henryqin1997.github.io/ziheng_qin/),
+[Tianlong Chen](https://tianlong-chen.github.io/), 
+and [Zhangyang Wang](https://www.ece.utexas.edu/people/faculty/atlas-wang)
 for valuable discussions and feedbacks. 
 This research is supported by the National Research Foundation, 
 Singapore under its AI Singapore Programme 
