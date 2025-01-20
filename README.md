@@ -4,9 +4,9 @@
 
 ## 🎥 Generating models with prompts in minutes!
 
-<video class="video" autoplay controls muted loop playsinline>
-  <source src="https://github.com/user-attachments/assets/12f85e24-f1f1-471f-bacc-c175b5ba23cd" type="video/mp4">
-</video>
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/12f85e24-f1f1-471f-bacc-c175b5ba23cd" width="80%">
+</div>  
 You can try our demo on [huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).
 
 
