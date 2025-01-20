@@ -1,5 +1,9 @@
 # Recurrent Parameter Generation
-The official repository of paper [Recurrent Diffusion for Large-Scale Parameter Generation]().
+
+### [Paper]() | [Project Page](https://NUS-HPC-AI-Lab.github.io/Recurrent-Parameter-Generation/) | [Huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation)
+![Video](https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation/blob/master/figures/demo_video.mp4)
+
+
 
 
 ##  Introduction
@@ -395,11 +399,20 @@ CUDA_VISIBLE_DEVICES=0 python ./evaluate/generate.py workspace.your_training_tag
 
 
 ## Acknowledgment
-coming soon...
-
-
+We thank 
+[Zhiyuan Liang](https://jerryliang24.github.io/), 
+[Zhuang Liu](https://liuzhuang13.github.io/), 
+[Gongfan Fang](https://fangggf.github.io/), 
+[Zangwei Zheng](https://zhengzangw.github.io/), 
+[Tianlong Chen](https://tianlong-chen.github.io/), 
+and [Zhangyang Wang](https://www.ece.utexas.edu/people/faculty/atlas-wang) 
+for valuable discussions and feedbacks. 
+This research is supported by the National Research Foundation, 
+Singapore under its AI Singapore Programme 
+(AISG Award No: AISG2-PhD-2021-08-008).
 
 
 ## Citation
-coming soon...
-
+```angular2html
+coming soon!
+```
