@@ -43,7 +43,7 @@ pip install mamba-ssm[causal-conv1d]
 ```
 3. Install other dependencies for this repository.
 ```shell
-git clone https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation.git
+git clone https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation.git --depth=1
 cd Recurrent-Parameter-Generation
 pip install -r requirements.txt
 ```
