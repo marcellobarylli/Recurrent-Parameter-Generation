@@ -3,9 +3,9 @@
 ### [Paper]() | [Project Page](https://NUS-HPC-AI-Lab.github.io/Recurrent-Parameter-Generation/) | [Huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation)
 
 ## 🎥 Demo
-<div align="center">
-  <video src="https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation/blob/master/figures/demo_video.mp4" width="50%">
-</div>
+![](figures/demo_video.gif)
+
+
 
 
 ##  Introduction
