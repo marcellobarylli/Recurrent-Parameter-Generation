@@ -427,7 +427,7 @@ Singapore under its AI Singapore Programme
 ```angular2html
 @misc{wang2025recurrent,
       title={Recurrent Diffusion for Large-Scale Parameter Generation},
-      author={Kai Wang, Dongwen Tang, Wangbo Zhao, and Yang You},
+      author={Wang, Kai and Tang, Dongwen and Zhao, Wangbo and You, Yang},
       year={2025},
 }
 ```
