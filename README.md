@@ -412,6 +412,8 @@ We thank
 [Zhiyuan Liang](https://jerryliang24.github.io/),
 [Gongfan Fang](https://fangggf.github.io/),
 [Xuanlei Zhao](https://oahzxl.github.io/),
+[Yuhao Zhou](https://github.com/Soptq),
+[Mingjia Shi](bdemo.github.io/homepage),
 [Zangwei Zheng](https://zhengzangw.github.io/), 
 [Ziheng Qin](https://henryqin1997.github.io/ziheng_qin/),
 [Tianlong Chen](https://tianlong-chen.github.io/), 
