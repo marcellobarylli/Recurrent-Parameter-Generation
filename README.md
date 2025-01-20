@@ -3,14 +3,11 @@
 ### [Paper]() | [Project Page](https://NUS-HPC-AI-Lab.github.io/Recurrent-Parameter-Generation/) | [Huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation)
 
 ## 🎥 Generating models with prompts in minutes!
-![](figures/demo_video.gif)
-You can try our demo on [huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).
-
 
 <video class="video" autoplay controls muted loop playsinline>
-  <source src="./figures/demo_video.mp4" type="video/mp4">
+  <source src="https://github.com/user-attachments/assets/12f85e24-f1f1-471f-bacc-c175b5ba23cd" type="video/mp4">
 </video>
-
+You can try our demo on [huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).
 
 
 ## Abstract
