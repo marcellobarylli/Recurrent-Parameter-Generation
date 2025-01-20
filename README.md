@@ -8,7 +8,7 @@
   <video src="https://github.com/user-attachments/assets/2eb9af79-988a-410d-8930-08d97764571c" width="100%">
 </div>  
 
-You can try our demo on [huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).
+**You can try our demo on [huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).**
 
 
 ## Abstract
