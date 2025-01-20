@@ -5,8 +5,9 @@
 ## 🎥 Generating models with prompts in minutes!
 
 <div align="center">
-  <video src="https://github.com/user-attachments/assets/12f85e24-f1f1-471f-bacc-c175b5ba23cd" width="80%">
+  <video src="https://github.com/user-attachments/assets/2eb9af79-988a-410d-8930-08d97764571c" width="100%">
 </div>  
+
 You can try our demo on [huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).
 
 
