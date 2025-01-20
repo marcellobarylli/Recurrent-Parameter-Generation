@@ -7,6 +7,10 @@
 You can try our demo on [huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).
 
 
+<video class="video" autoplay controls muted loop playsinline>
+  <source src="./figures/demo_video.mp4" type="video/mp4">
+</video>
+
 
 
 ## Abstract
