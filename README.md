@@ -2,7 +2,7 @@
 
 ### [Paper]() | [Project Page](https://NUS-HPC-AI-Lab.github.io/Recurrent-Parameter-Generation/) | [Huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation)
 
-## 🎥 Generating models with prompts in minutes!
+## 🎥 Generating customized models with prompts in just minutes!
 
 <div align="center">
   <video src="https://github.com/user-attachments/assets/2eb9af79-988a-410d-8930-08d97764571c" width="100%">
