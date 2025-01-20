@@ -1,8 +1,10 @@
 # Recurrent Parameter Generation
 
 ### [Paper]() | [Project Page](https://NUS-HPC-AI-Lab.github.io/Recurrent-Parameter-Generation/) | [Huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation)
-![Video](https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation/blob/master/figures/demo_video.mp4)
-
+<video controls>
+  <source src="https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation/blob/master/figures/demo_video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 
 
