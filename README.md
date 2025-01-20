@@ -414,7 +414,9 @@ We thank
 [Gongfan Fang](https://fangggf.github.io/), 
 [Zangwei Zheng](https://zhengzangw.github.io/), 
 [Tianlong Chen](https://tianlong-chen.github.io/), 
-and [Zhangyang Wang](https://www.ece.utexas.edu/people/faculty/atlas-wang) 
+[Zhangyang Wang](https://www.ece.utexas.edu/people/faculty/atlas-wang),
+[Xuanlei Zhao](https://oahzxl.github.io/),
+and [Ziheng Qin](https://henryqin1997.github.io/ziheng_qin/)
 for valuable discussions and feedbacks. 
 This research is supported by the National Research Foundation, 
 Singapore under its AI Singapore Programme 
@@ -422,7 +424,7 @@ Singapore under its AI Singapore Programme
 
 
 ## Citation
-```angular2html
+```
 @misc{wang2025recurrent,
       title={Recurrent Diffusion for Large-Scale Parameter Generation},
       author={Wang, Kai and Tang, Dongwen and Zhao, Wangbo and You, Yang},
