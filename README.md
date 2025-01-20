@@ -1,4 +1,4 @@
-# Recurrent Parameter Generation
+# Recurrent Diffusion for Large-Scale Parameter Generation
 
 ### [Paper]() | [Project Page](https://NUS-HPC-AI-Lab.github.io/Recurrent-Parameter-Generation/) | [Huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation)
 
