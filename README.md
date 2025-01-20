@@ -6,7 +6,7 @@
 https://github.com/user-attachments/assets/c75a6455-db4e-4353-b941-5612da5f712b
 
 
-**You can try our demo on [huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).**
+**You can try our demo on [Huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).**
 
 
 ## Abstract
