@@ -4,13 +4,14 @@
 
 ## 🎥 Demo
 ![](figures/demo_video.gif)
+You can try our demo on [huggingface](https://huggingface.co/MTDoven/Recurrent-Parameter-Generation).
 
 
 
 
-##  Introduction
+## Abstract
 Parameter generation has long struggled to scale, significantly limiting its applications. 
-In this study, we introduce Recurrent diffusion for large-scale Parameter Generation, or RPG, 
+In this study, we introduce **R**ecurrent diffusion for large-scale **P**arameter **G**eneration, or **RPG**, 
 which models large-scale parameter generation through a recurrent diffusion process. 
 We divide the trained parameters into non-overlapping parts and propose a recurrent model to learn their relationships. 
 The outputs of this recurrent model, serving as conditions, are then input into a diffusion model to generate neural network parameters. 
@@ -36,12 +37,12 @@ conda install pytorch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 pytorch-cuda=
 ```
 2. Install mamba-ssm. (You may run into compilation issues, refer to the [official mamba-ssm repository](https://github.com/state-spaces/mamba) for details.)
 ```shell
-pip install mamba-ssm[causal-conv1d]
 pip install causal-conv1d
+pip install mamba-ssm[causal-conv1d]
 ```
 3. Install other dependencies for this repository.
 ```shell
-git clone https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation.git --depth=1
+git clone https://github.com/NUS-HPC-AI-Lab/Recurrent-Parameter-Generation.git
 cd Recurrent-Parameter-Generation
 pip install -r requirements.txt
 ```
@@ -117,11 +118,15 @@ python ./workspace/set_configs.py
 
 2. Prepare checkpoint dataset. (Choose one of two options.)
 ```shell
-# Download our dataset. (download about 64 GB)
-Coming soon...
+# Download our dataset from huggingface. (download about 68 GB)
+cd ./dataset/condition_classinput_vittiny
+git lfs install
+git clone https://huggingface.co/datasets/MTDoven/ViTTiny1022
+mv ./ViTTiny1022/* ./
+rm -r ./ViTTiny1022
 ```
 ```shell
-# Train by the codes. (need a long time)
+# Train by the sources. (need a long time)
 cd ./dataset/condition_classinput_vittiny
 CUDA_VISIBLE_DEVICES=0 bash train.sh
 sh split.sh
