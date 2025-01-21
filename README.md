@@ -410,6 +410,7 @@ CUDA_VISIBLE_DEVICES=0 python ./evaluate/generate.py workspace.your_training_tag
 ## Acknowledgment
 We thank 
 [Zhiyuan Liang](https://jerryliang24.github.io/),
+[Zhuang Liu](https://liuzhuang13.github.io/),
 [Gongfan Fang](https://fangggf.github.io/),
 [Xuanlei Zhao](https://oahzxl.github.io/),
 [Yuhao Zhou](https://github.com/Soptq),
@@ -433,4 +434,4 @@ Singapore under its AI Singapore Programme
 }
 ```
 
-[//]: # ([Zhuang Liu]&#40;https://liuzhuang13.github.io/&#41;,)
+
