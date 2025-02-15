@@ -111,7 +111,7 @@ The training and testing process for the other data followed a similar pattern.
 ## Advanced Usage
 
 
-### Reproduce Section 5: *RPG’s Potential in Unseen Tasks*
+### Reproduce Section 4: _RPG Generalizes to Unseen Tasks_
 In this section, we will show you how to reproduce the experiments of section 5: *RPG’s Potential in Unseen Tasks*.
 
 <details>
