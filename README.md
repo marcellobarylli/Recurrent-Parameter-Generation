@@ -12,15 +12,20 @@ https://github.com/user-attachments/assets/b54dbe8b-5ee7-4273-9e32-f8805d2665ad
 
 
 ## Abstract
-Parameter generation has long struggled to scale, significantly limiting its applications. 
-In this study, we introduce **R**ecurrent diffusion for large-scale **P**arameter **G**eneration, or **RPG**, 
-which models large-scale parameter generation through a recurrent diffusion process. 
-We divide the trained parameters into non-overlapping parts and propose a recurrent model to learn their relationships. 
-The outputs of this recurrent model, serving as conditions, are then input into a diffusion model to generate neural network parameters. 
-Utilizing only a single GPU, our method can generate parameters for popular vision and language models, such as ConvNeXt-L and LoRA parameters for LLaMA-7B. 
-Across various architectures and tasks, the generated parameters consistently achieve comparable performance to those of trained networks. 
-Additionally, our approach demonstrates potential in generating models capable of handling unseen tasks, 
-indicating that recurrent diffusion greatly enhances the practicality of parameter generation.
+Parameter generation has long struggled to match the scale of today’s large vision and language
+models, curbing its broader utility. In this paper, we introduce Recurrent Diffusion for Large-Scale
+Parameter Generation (RPG), a novel framework that generates full neural network parameters—up
+to hundreds of millions—on a single GPU. Our approach first partitions a network’s parameters
+into non-overlapping ‘tokens’, each corresponding to a distinct portion of the model. A recurrent
+mechanism then learns the inter-token relationships, producing ‘prototypes’ which serve as conditions 
+for a diffusion process that ultimately synthesizes the full parameters. Across a spectrum of
+architectures and tasks—including ResNets, ConvNeXts and ViTs on ImageNet-1K and COCO,
+and even LoRA-based LLMs—RPG achieves performance on par with fully trained networks while
+avoiding excessive memory overhead. Notably, it generalizes beyond its training set to generate
+valid parameters for previously unseen tasks, highlighting its flexibility in dynamic and open-ended
+scenarios. By overcoming the longstanding memory and scalability barriers, 
+RPG serves as a critical advance in ‘AI generating AI’, potentially
+enabling efficient weight generation at scales previously deemed infeasible.
 
 
 
