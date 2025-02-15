@@ -13,9 +13,9 @@ https://github.com/user-attachments/assets/b54dbe8b-5ee7-4273-9e32-f8805d2665ad
 
 ## Abstract
 Parameter generation has long struggled to match the scale of today’s large vision and language
-models, curbing its broader utility. In this paper, we introduce Recurrent Diffusion for Large-Scale
-Parameter Generation (RPG), a novel framework that generates full neural network parameters—up
-to hundreds of millions—on a single GPU. Our approach first partitions a network’s parameters
+models, curbing its broader utility. In this paper, we introduce **R**ecurrent Diffusion for Large-Scale
+**P**arameter **G**eneration (**RPG**), a novel framework that generates full neural network parameters—up
+to **hundreds of millions**—on a **single GPU**. Our approach first partitions a network’s parameters
 into non-overlapping ‘tokens’, each corresponding to a distinct portion of the model. A recurrent
 mechanism then learns the inter-token relationships, producing ‘prototypes’ which serve as conditions 
 for a diffusion process that ultimately synthesizes the full parameters. Across a spectrum of
